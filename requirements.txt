@@ -1,0 +1,31 @@
+# PHMSA RAG Pipeline — Requirements
+# Install with: pip install -r requirements.txt
+#
+# Pipeline stages:
+#   extraction.py     — docling
+#   preprocessing.py  — re, os (stdlib only, no installs needed)
+#   chunking.py       — langchain-experimental, langchain-huggingface, langchain-chroma, chromadb
+#   rag.py            — langchain-groq, langchain-core, langchain-huggingface, langchain-chroma
+ 
+# Core LangChain
+langchain>=0.3.0
+langchain-community>=0.3.0
+langchain-core>=0.3.0
+langchain-experimental>=0.3.0  # SemanticChunker in chunking.py
+ 
+# LLM
+langchain-groq>=0.2.0          # ChatGroq in rag.py
+ 
+# Embeddings — used in chunking.py AND rag.py (must stay in sync)
+langchain-huggingface>=0.1.0   # HuggingFaceEmbeddings
+sentence-transformers>=3.0.0   # backend for HuggingFaceEmbeddings
+ 
+# Vector store
+langchain-chroma>=1.1.0        # Chroma wrapper in chunking.py and rag.py
+chromadb>=0.6.0                # Chroma client
+ 
+# PDF extraction (extraction.py only — skip if PDFs are already converted)
+docling>=2.0.0
+ 
+# Environment / secrets
+python-dotenv>=1.0.0           # load_dotenv() in rag.py
