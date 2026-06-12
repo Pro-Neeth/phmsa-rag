@@ -1,14 +1,7 @@
-# environment
 .venv/
 .env
-
-# data — PDFs and raw/cleaned markdown, too large and potentially sensitive
 data/
-
-# vector store — rebuilt by running chunking.py
 chroma_db/
-
-# python
 __pycache__/
 *.pyc
 *.pyo

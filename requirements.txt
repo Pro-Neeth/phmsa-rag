@@ -16,7 +16,7 @@ langchain-experimental>=0.3.0  # SemanticChunker in chunking.py
 # LLM
 langchain-groq>=0.2.0          # ChatGroq in rag.py
  
-# Embeddings — used in chunking.py AND rag.py (must stay in sync)
+# Embeddings
 langchain-huggingface>=0.1.0   # HuggingFaceEmbeddings
 sentence-transformers>=3.0.0   # backend for HuggingFaceEmbeddings
  
@@ -24,7 +24,7 @@ sentence-transformers>=3.0.0   # backend for HuggingFaceEmbeddings
 langchain-chroma>=1.1.0        # Chroma wrapper in chunking.py and rag.py
 chromadb>=0.6.0                # Chroma client
  
-# PDF extraction (extraction.py only — skip if PDFs are already converted)
+# PDF extraction (extraction.py only)
 docling>=2.0.0
  
 # Environment / secrets
