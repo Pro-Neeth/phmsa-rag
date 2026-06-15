@@ -20,9 +20,12 @@ langchain-groq>=0.2.0          # ChatGroq in rag.py
 langchain-huggingface>=0.1.0   # HuggingFaceEmbeddings
 sentence-transformers>=3.0.0   # backend for HuggingFaceEmbeddings
  
+# GraphRAG — Neo4j Aura
+langchain-neo4j>=0.3.0          # Neo4jGraph + GraphCypherQAChain
+neo4j>=5.0.0                    # Neo4j Python driver
+
 # Vector store
-langchain-chroma>=1.1.0        # Chroma wrapper in chunking.py and rag.py
-chromadb>=0.6.0                # Chroma client
+langchain-qdrant                # Qdrant wrapper in chunking.py and rag.py
  
 # PDF extraction (extraction.py only)
 docling>=2.0.0

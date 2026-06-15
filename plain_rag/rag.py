@@ -1,26 +1,29 @@
 import os
 from dotenv import load_dotenv
 
-from langchain_chroma import Chroma
-from langchain_groq import ChatGroq
+from langchain_qdrant import QdrantVectorStore, RetrievalMode
+from langchain_google_genai import ChatGoogleGenerativeAI
 from langchain_huggingface import HuggingFaceEmbeddings
 from langchain_core.prompts import ChatPromptTemplate
 
 load_dotenv()  
 
+os.environ["HF_TOKEN"] = os.getenv("HF_TOKEN")
 embedding_model = HuggingFaceEmbeddings(model_name="BAAI/bge-base-en-v1.5")
 
-vector_store = Chroma(
-    collection_name="phmsa_vectordb",
-    embedding_function=embedding_model,
-    persist_directory="./chroma_db",
-)
+vector_store = QdrantVectorStore.from_existing_collection(
+        collection_name="phmsa_vectordb",
+        embedding=embedding_model,
+        prefer_grpc=True,
+        url = os.getenv("QDRANT_URL"),
+        api_key=os.getenv("QDRANT_API_KEY"),
+        retrieval_mode=RetrievalMode.DENSE,
+    )
 
-llm = ChatGroq(
-    model="llama-3.3-70b-versatile",
-    temperature=0.5,
+llm = ChatGoogleGenerativeAI(
+    model="gemini-3.1-flash-lite",
+    temperature=0.2,
     max_tokens=None,
-    reasoning_format="parsed",
     timeout=None,
     max_retries=2,
 )
@@ -40,7 +43,7 @@ Rules:
 ])
 
 
-def retrieve(query, k=14):
+def retrieve(query, k=15):
     docs = vector_store.similarity_search(query, k=k)
     return docs
 
@@ -58,8 +61,7 @@ def query_pipeline(query):
     chain   = prompt | llm
     response = chain.invoke({"query": query, "context": context})
 
-    # save retrieved chunks for inspection
-    eval_path = "./data/evaluation/validation/chunk_retrieval.txt"
+    eval_path = "./evaluation/chunk_retrieval.txt"
     os.makedirs(os.path.dirname(eval_path), exist_ok=True)
     with open(eval_path, "w", encoding="utf-8") as f:
         f.write(f"Query: {query}\n\n")
@@ -68,14 +70,15 @@ def query_pipeline(query):
     return response.content
 
 
-print("PHMSA RAG Pipeline — type 'exit' to quit\n")
+if __name__ == "__main__":
+    print("PHMSA RAG Pipeline — type 'exit' to quit\n")
 
-while True:
-    query = input("Query: ").strip()
-    if not query:
-        continue
-    if query.lower() in ("exit", "quit"):
-        break
+    while True:
+        query = input("Query: ").strip()
+        if not query:
+            continue
+        if query.lower() in ("exit", "quit"):
+            break
 
-    answer = query_pipeline(query)
-    print(f"\n{answer}\n")
+        answer = query_pipeline(query)
+        print(f"\n{answer}\n")

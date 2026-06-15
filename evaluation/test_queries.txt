@@ -1,0 +1,42 @@
+
+--- Material & Weld Failure ---
+
+1. What caused the rupture of the Marathon Pipe Line LLC's Wabash 12-inch Products Pipeline in Ashmore, Illinois in 2008, and what role did the pipe's manufacturing history play in the failure?
+
+2. How did a pre-existing weld defect from the Stupp Pipe Corporation contribute to the Enbridge Line 14 rupture in Atwood, Wisconsin in 2007, and why was this defect not caught before the pipeline entered service?
+
+3. What is the relationship between repeated hydrostatic testing and longitudinal ERW weld seam failures in older pipelines, based on the reports in the corpus?
+
+--- Natural Force & External Damage ---
+
+4. What caused the Columbia Gulf Transmission Line 200 rupture in Estill County, Kentucky in 2012, and how did land movement contribute to pipeline overstress?
+
+5. In incidents where natural force damage was the cause of failure, what were the most common contributing environmental or geological factors described across the reports?
+
+--- Equipment Failure & Incorrect Operation ---
+
+6. In cases where equipment failure led to a pipeline incident, what were the most frequently cited root causes — and were they primarily mechanical, procedural, or design-related?
+
+7. What operational decisions or control system failures allowed pressure to build beyond safe limits before a failure was detected in the reported incidents?
+
+--- Operator & Human Error ---
+
+8. Across the incidents attributed to operator error, what procedural breakdowns or gaps in training were identified as contributing factors?
+
+9. How did failures in SCADA monitoring or control room communication contribute to delayed incident detection and increased commodity release volume?
+
+--- Corrosion-Related Failures ---
+
+10. What environmental and material conditions led to external corrosion failures in the corpus, and how did the adequacy of cathodic protection systems factor into those failures?
+
+11. In internal corrosion failures, what was the relationship between the commodity being transported and the rate or type of corrosion observed?
+
+--- Cross-Cutting Causal Reasoning ---
+
+12. Across multiple incidents, what inspection methods — such as MFL ILI or hydrostatic testing — failed to detect anomalies that later caused failures, and why did they miss them?
+
+13. Compare the root causes of failures in hazardous liquid pipelines versus natural gas transmission pipelines. Are there systematic differences in how and why they fail?
+
+14. What corrective actions were most commonly recommended after pipeline ruptures, and were similar failures repeated by the same operators in later incidents?
+
+15. In incidents where third-party or outside force damage caused a failure, what factors — such as depth of cover, right-of-way marking, or one-call compliance — were identified as contributing to the damage occurring?

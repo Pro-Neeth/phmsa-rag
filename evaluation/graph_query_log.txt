@@ -1,0 +1,28 @@
+Q: What caused the rupture of the Marathon Pipe Line LLC's Wabash 12-inch Products Pipeline in Ashmore, Illinois in 2008, and what role did the pipe's manufacturing history play in the failure?
+Cypher: MATCH (d:Document)-[:MENTIONS]->(o:Operator {id: "Marathon Pipe Line LLC"}),
+      (d)-[:MENTIONS]->(p:Pipeline {id: "Wabash 12-inch Products Pipeline"}),
+      (d)-[:MENTIONS]->(l:Location {location: "Ashmore, Illinois"}),
+      (d)-[:MENTIONS]->(c:Cause),
+      (d)-[:MENTIONS]->(pm:Pipematerial)
+WHERE d.`Date of Failure` CONTAINS "2008"
+RETURN c.id, pm.id
+A: I don't know, sorry.
+------------------------------------------------------------
+Q: In internal corrosion failures, what was the relationship between the commodity being transported and the rate or type of corrosion observed?
+Cypher: MATCH (f:Failuretype {id: 'internal corrosion'})-[:INVOLVED_IN]->(c:Commodity) RETURN c.id
+A: I don't know, sorry.
+------------------------------------------------------------
+Q: In internal corrosion failures, what was the relationship between the commodity being transported and the rate or type of corrosion observed?
+Cypher: MATCH (f:Failuretype {id: 'internal corrosion'})-[:INVOLVED_IN]->(c:Commodity) RETURN c.id
+A: I don't know, sorry.
+------------------------------------------------------------
+Q: What caused the rupture of the Marathon Pipe Line LLC's Wabash 12-inch Products Pipeline in Ashmore, Illinois in 2008, and what role did the pipe's manufacturing history play in the failure?
+Cypher: MATCH (d:Document)-[:MENTIONS]->(o:Operator {id: "Marathon Pipe Line LLC"}),
+      (d)-[:MENTIONS]->(p:Pipeline {id: "Wabash 12-inch Products Pipeline"}),
+      (d)-[:MENTIONS]->(l:Location {location: "Ashmore, Illinois"}),
+      (d)-[:MENTIONS]->(c:Cause),
+      (d)-[:MENTIONS]->(pm:Pipematerial)
+WHERE d.`Date of Failure` CONTAINS "2008"
+RETURN c.id AS Cause, pm.id AS PipeManufacturingHistory
+A: I don't know, sorry.
+------------------------------------------------------------
