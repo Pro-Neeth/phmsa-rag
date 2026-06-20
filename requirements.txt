@@ -32,3 +32,6 @@ docling>=2.0.0
  
 # Environment / secrets
 python-dotenv>=1.0.0           # load_dotenv() in rag.py
+
+# Frontend
+streamlit>=1.35.0

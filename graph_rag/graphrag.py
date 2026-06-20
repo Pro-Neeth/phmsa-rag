@@ -99,23 +99,24 @@ def save_query_log(question, answer, cypher, log_path="./evaluation/graph_query_
  
  
  
-print("PHMSA GraphRAG Pipeline")
-print("Queries are translated to Cypher and executed against Neo4j Aura.")
-print("Type 'exit' to quit, 'schema' to print the current graph schema.\n")
- 
-while True:
-    question = input("Query: ").strip()
- 
-    if not question:
-        continue
- 
-    if question.lower() in ("exit", "quit"):
-        break
- 
-    if question.lower() == "schema":
-        print(graph.schema)
-        continue
- 
-    answer, cypher = query_graph(question)
-    save_query_log(question, answer, cypher)
-    print(f"\n{answer}\n")
+if __name__ == "__main__":
+    print("PHMSA GraphRAG Pipeline")
+    print("Queries are translated to Cypher and executed against Neo4j Aura.")
+    print("Type 'exit' to quit, 'schema' to print the current graph schema.\n")
+
+    while True:
+        question = input("Query: ").strip()
+
+        if not question:
+            continue
+
+        if question.lower() in ("exit", "quit"):
+            break
+
+        if question.lower() == "schema":
+            print(graph.schema)
+            continue
+
+        answer, cypher = query_graph(question)
+        save_query_log(question, answer, cypher)
+        print(f"\n{answer}\n")

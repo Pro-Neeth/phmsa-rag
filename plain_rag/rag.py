@@ -37,7 +37,8 @@ on the retrieved report sections.
 Rules:
 1. Only use the provided context. Do not use outside knowledge.
 2. For causal analysis questions, be thorough and specific.
-3. Always cite the source document (filename and section) for every claim you make.
+3. Cite the chunk index number in square brackets (e.g. [1], [3]) immediately after \
+every claim you make. Multiple citations are allowed (e.g. [1][4]).
 4. If the context does not contain enough information to answer, say 'I don't know, sorry.'"""),
     ("user", "Query: {query}\n\nContext:\n{context}")
 ])
@@ -48,14 +49,23 @@ def retrieve(query, k=15):
     return docs
 
 def format_context(docs):
+    """Number each chunk [1], [2], … so the LLM can cite them by index."""
     sections = []
-    for doc in docs:
+    for i, doc in enumerate(docs, start=1):
         filename = doc.metadata.get("Filename", "unknown")
         section  = doc.metadata.get("File Section", "unknown section")
-        sections.append(f"[{filename} — {section}]\n{doc.page_content}")
+        sections.append(f"[{i}] [{filename} — {section}]\n{doc.page_content}")
     return "\n\n".join(sections)
 
 def query_pipeline(query):
+    """
+    Returns
+    -------
+    answer : str
+        LLM response with inline chunk citations like [1], [3].
+    docs : list[Document]
+        The retrieved chunks (1-indexed to match citations in the answer).
+    """
     docs    = retrieve(query)
     context = format_context(docs)
     chain   = prompt | llm
@@ -67,7 +77,7 @@ def query_pipeline(query):
         f.write(f"Query: {query}\n\n")
         f.write("\n\n".join(str(doc) for doc in docs))
 
-    return response.content
+    return response.content, docs
 
 
 if __name__ == "__main__":
@@ -80,5 +90,5 @@ if __name__ == "__main__":
         if query.lower() in ("exit", "quit"):
             break
 
-        answer = query_pipeline(query)
+        answer, docs = query_pipeline(query)
         print(f"\n{answer}\n")
