@@ -3,8 +3,8 @@ from uuid import uuid4
 from dotenv import load_dotenv
  
 from langchain_qdrant import QdrantVectorStore, RetrievalMode
-from langchain_experimental.text_splitter import SemanticChunker
 from langchain_core.documents import Document
+from langchain_text_splitter import RecursiveCharacterTextSplitter
 from langchain_huggingface import HuggingFaceEmbeddings
 from parse_document import process_document
 
@@ -13,9 +13,12 @@ load_dotenv()
 
 os.environ["HF_TOKEN"] = os.getenv("HF_TOKEN")
 
-def semantic_chunking(text, embedding_model):
-    text_splitter = SemanticChunker(
-        embedding_model, breakpoint_threshold_type="gradient"
+def chunking(text):
+    text_splitter = RecursiveCharacterTextSplitter(
+        chunk_size=100,
+        chunk_overlap=20,
+        length_function=len,
+        is_separator_regex=False,
     )
     return text_splitter.split_text(text)
 
@@ -60,7 +63,7 @@ def chunk_and_vectorize_all(cleaned_dir="./data/md_clean"):
             processed_sections = process_document(text_content, filename)
  
             for id_num, section in enumerate(processed_sections):
-                chunks = semantic_chunking(section["Section Content"], embedding_model)
+                chunks = chunking(section["Section Content"])
                 section["Chunks"] = chunks
                 vectorize(section, id_num, vector_store)
  
