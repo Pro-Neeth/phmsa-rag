@@ -1,17 +1,16 @@
 import os
 from uuid import uuid4
 from dotenv import load_dotenv
- 
-from langchain_qdrant import QdrantVectorStore, RetrievalMode
-from langchain_core.documents import Document
-from langchain_text_splitter import RecursiveCharacterTextSplitter
-from langchain_huggingface import HuggingFaceEmbeddings
+
+from sentence_transformers import SentenceTransformer
+
+from qdrant_client import QdrantClient
+from qdrant_client.models import Distance, VectorParams, PointStruct, Document
+
 from parse_document import process_document
 
 
 load_dotenv()  
-
-os.environ["HF_TOKEN"] = os.getenv("HF_TOKEN")
 
 def chunking(text):
     text_splitter = RecursiveCharacterTextSplitter(
@@ -22,7 +21,7 @@ def chunking(text):
     )
     return text_splitter.split_text(text)
 
-def vectorize(section, id_num, vector_store):
+def embedding(section, id_num, vector_store):
     documents = []
     for chunk in section["Chunks"]:
         document = Document(
@@ -35,9 +34,9 @@ def vectorize(section, id_num, vector_store):
     vector_store.add_documents(documents, ids=uuids)
 
 
-def chunk_and_vectorize_all(cleaned_dir="./data/md_clean"):
+def main(cleaned_dir="./data/md_clean"):
 
-    embedding_model = HuggingFaceEmbeddings(model_name="BAAI/bge-base-en-v1.5")
+    embedding_model = SentenceTransformer("BAAI/bge-base-en-v1.5")
 
     vector_store = QdrantVectorStore.from_existing_collection(
         collection_name="phmsa_vectordb",
@@ -65,16 +64,16 @@ def chunk_and_vectorize_all(cleaned_dir="./data/md_clean"):
             for id_num, section in enumerate(processed_sections):
                 chunks = chunking(section["Section Content"])
                 section["Chunks"] = chunks
-                vectorize(section, id_num, vector_store)
+                embedding(section, id_num, vector_store)
  
-            print(f"[OK] Vectorized: {filename} ({len(processed_sections)} sections)")
+            print(f"[OK] Embedded: {filename} ({len(processed_sections)} sections)")
  
         except Exception as e:
             print(f"[ERROR] {filename}: {e}")
             continue
  
-    print("Chunking and vectorization complete.")
+    print("Chunking and ingestion complete.")
  
  
 if __name__ == "__main__":
-    chunk_and_vectorize_all()
+    main()

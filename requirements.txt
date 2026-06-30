@@ -1,31 +1,17 @@
 # PHMSA RAG Pipeline — Requirements
 # Install with: pip install -r requirements.txt
 
- 
-# Core LangChain
-langchain>=0.3.0
-langchain-community>=0.3.0
-langchain-core>=0.3.0
- 
 # LLM
-langchain-groq>=0.2.0          
- 
-# Embeddings
-langchain-huggingface>=0.1.0   # HuggingFaceEmbeddings
-sentence-transformers>=3.0.0   # backend for HuggingFaceEmbeddings
- 
-# GraphRAG — Neo4j Aura
-langchain-neo4j>=0.3.0          # Neo4jGraph + GraphCypherQAChain
-neo4j>=5.0.0                    # Neo4j Python driver
+google-genai>=2.10.0
 
-# Vector store
-langchain-qdrant                # Qdrant wrapper in chunking.py and rag.py
- 
-# PDF extraction
-#docling>=2.0.0
+# Vector Store
+qdrant-client>=1.18.0 
+
+# Embeddings
+sentence-transformers>=5.6.0
  
 # Environment / secrets
-python-dotenv>=1.0.0           
+python-dotenv>=1.2.2          
 
 # Frontend
-streamlit>=1.35.0
+streamlit>=1.58.0
