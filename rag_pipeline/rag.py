@@ -20,7 +20,7 @@ vector_store = QdrantVectorStore.from_existing_collection(
 
 llm = ChatGoogleGenerativeAI(
     model="gemini-3.1-flash-lite",
-    temperature=0.2,
+    temperature=0.3,
     max_tokens=None,
     timeout=None,
     max_retries=2,
