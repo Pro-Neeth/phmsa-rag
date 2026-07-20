@@ -1,6 +1,7 @@
 import re
 import os
 import unicodedata
+import sys
 
 
 ''' Cleans up the formatting of a given text document '''
@@ -38,6 +39,9 @@ def clean(text_content):
     )
     text_content = JUNK_CHARS.sub('', text_content)
 
+    # Remove Docling image placeholder lines (e.g. "<!-- image -->")
+    text_content = re.sub(r'(?im)^\s*<!--\s*image\s*-->\s*$\n?', '', text_content)
+
     # Extract the subject title (line immediately after "Subject" label) and
     # remove all repeated page-header occurrences of it throughout the document.
     # e.g. "## Failure Investigation Report -Marathon Pipe Line LLC -Material Failure, Rupture Failure Date ..."
@@ -71,6 +75,11 @@ if __name__ == "__main__":
     md_dir   = "data/md/"
     cleaned_dir = "data/md_cleaned/"
 
+    response = input('Do you want to clean the markdown files in the "data/md/" directory? (y/n): ')
+    if response.lower() != 'y':
+        print("Operation cancelled.")
+        sys.exit()
+        
     os.makedirs(cleaned_dir, exist_ok=True)
 
     files = [f for f in os.listdir(md_dir) if f.endswith(".txt")]
