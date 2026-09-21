@@ -18,48 +18,52 @@ def process_document(text_content, filename):
         "File Section": None,
     }
 
-    subject_match = re.search(r'^Subject\s*\n\s*(.+?)(?=\n\n|\n##)', text_content, re.MULTILINE | re.DOTALL)
+    # clean_md.py lifts the report title out of the letterhead into a leading
+    # "# " heading; fall back to the raw letterhead layout for older files.
+    subject_match = re.search(r'^#\s+(.+)', text_content)
+    if not subject_match:
+        subject_match = re.search(r'^Subject\s*\n\s*(.+?)(?=\n\n|\n##)', text_content, re.MULTILINE | re.DOTALL)
     if subject_match:
         metadata["Subject"] = subject_match.group(1).strip()
 
     field_patterns = [
         (
-            r'Date of Failure\s*\n\s*([^\n]+)',
-            r'\|\s*Date of Failure\s*\|\s*([^\|\n]+?)\s*\|',
+            r'Date\s*(?:&|and)?\s*(?:Time)?\s*of\s*Failures?\s*:?\s*\n\s*([^\n]+)',
+            r'\|\s*Date\s*(?:&|and)?\s*(?:Time)?\s*of\s*Failures?\s*\|\s*([^\|\n]+?)\s*\|',
             'Date of Failure'
         ),
         (
-            r'Commodity Released\s*\n\s*([^\n]+)',
+            r'Commodity Released\s*:?\s*\n\s*([^\n]+)',
             r'\|\s*Commodity Released\s*\|\s*([^\|\n]+?)\s*\|',
             'Commodity Released'
         ),
         (
-            r'City[/,]?\s*Parish[,\s]*&?\s*State\s*\n\s*([^\n]+)',
-            r'\|\s*City[,\s]*Parish[,\s]*(?:and|&)\s*State\s*\|\s*([^\|\n]+?)\s*\|',
+            r'City\s*[/,]?\s*(?:County|Parish)[,\s]*&?\s*State\s*:?\s*\n\s*([^\n]+)',
+            r'\|\s*City[,\s/]*(?:County|Parish)[,\s]*(?:and|&)?\s*State\s*\|\s*([^\|\n]+?)\s*\|',
             'City, County, and State'
         ),
         (
-            r'OpID\s*&\s*Operator Name\s*\n\s*([^\n]+)',
-            r'\|\s*OpID\s*(?:and|&)\s*Operator Name\s*\|\s*([^\|\n]+?)\s*\|',
+            r'Op\s*ID\s*(?:&|and)\s*Operator Name\s*:?\s*\n\s*([^\n]+)',
+            r'\|\s*Op\s*ID\s*(?:and|&)\s*Operator Name\s*\|\s*([^\|\n]+?)\s*\|',
             'OpID & Operator Name'
         ),
         (
-            r'Unit\s*#\s*&\s*Unit Name\s*\n\s*([^\n]+)',
-            r'\|\s*Unit\s*#\s*(?:and|&)\s*Unit Name\s*\|\s*([^\|\n]+?)\s*\|',
+            r'Unit\s*#?\s*(?:&|and)\s*Unit Name\s*:?\s*\n\s*([^\n]+)',
+            r'\|\s*Unit\s*#?\s*(?:and|&)\s*Unit Name\s*\|\s*([^\|\n]+?)\s*\|',
             'Unit # & Unit Name'
         ),
         (
-            r'(?:SMART|WMS)\s*Activity\s*#\s*\n\s*([^\n]+)',
-            r'\|\s*(?:SMART|WMS)Activity\s*#\s*\|\s*([^\|\n]+?)\s*\|',
+            r'(?:SMART|WMS)\s*Activity\s*#\s*:?\s*\n\s*([^\n]+)',
+            r'\|\s*(?:SMART|WMS)\s*Activity\s*#\s*\|\s*([^\|\n]+?)\s*\|',
             'SMART Activity #'
         ),
         (
-            r'Milepost\s*[/\s]*Location\s*\n\s*([^\n]+)',
-            r'\|\s*Milepost\s*[/\s]*Location\s*\|\s*([^\|\n]+?)\s*\|',
+            r'Milepost\s*[/I\s]*Location\s*:?\s*\n\s*([^\n]+)',
+            r'\|\s*Milepost\s*[/I\s]*Location\s*\|\s*([^\|\n]+?)\s*\|',
             'Milepost/Location'
         ),
         (
-            r'Type of Failure\s*\n\s*([^\n]+)',
+            r'Type of Failure\s*:?\s*\n\s*([^\n]+)',
             r'\|\s*Type of Failure\s*\|\s*([^\|\n]+?)\s*\|',
             'Type of Failure'
         )
